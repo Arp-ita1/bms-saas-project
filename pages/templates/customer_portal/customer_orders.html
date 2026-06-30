@@ -1,0 +1,84 @@
+{% extends "customer_portal/customer_base.html" %}
+
+{% block title %}My Orders | Customer Portal{% endblock %}
+
+{% block content %}
+
+<section class="cp-hero">
+    <div class="cp-hero-content">
+        <span class="cp-badge">
+            <i class="bi bi-bag-check"></i>
+            My Orders
+        </span>
+
+        <h1>My Orders</h1>
+
+        <p>
+            View all orders created for your account and track their latest status.
+        </p>
+    </div>
+
+    <div class="cp-hero-side">
+        <div class="cp-glass-card">
+            <span>Total Records</span>
+            <h3>{{ orders|length }}</h3>
+            <p>Filtered orders</p>
+        </div>
+    </div>
+</section>
+
+<div class="cp-panel mb-4">
+    <form method="get" class="row g-3">
+        <div class="col-md-7">
+            <input type="text" name="q" value="{{ q|default:'' }}" placeholder="Search order title">
+        </div>
+
+        <div class="col-md-3">
+            <select name="status">
+                <option value="">All Status</option>
+                <option value="Pending" {% if status == "Pending" %}selected{% endif %}>Pending</option>
+                <option value="Processing" {% if status == "Processing" %}selected{% endif %}>Processing</option>
+                <option value="Completed" {% if status == "Completed" %}selected{% endif %}>Completed</option>
+                <option value="Cancelled" {% if status == "Cancelled" %}selected{% endif %}>Cancelled</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <button type="submit" class="cp-main-btn w-100 justify-content-center">
+                Filter
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="cp-panel">
+    <div class="cp-panel-head">
+        <div>
+            <h4>Order List</h4>
+            <p>Your order records</p>
+        </div>
+    </div>
+
+    {% if orders %}
+        {% for order in orders %}
+            <div class="cp-row">
+                <div>
+                    <strong>{{ order.order_number }}</strong>
+                    <small>{{ order.title }} | ₹{{ order.total_amount }} | {{ order.order_date }}</small>
+                </div>
+
+                <a href="/customer-portal/orders/{{ order.id }}/" class="cp-main-btn">
+                    View
+                </a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="cp-empty">
+            <i class="bi bi-bag"></i>
+            <h5>No orders found</h5>
+            <p>No order matches your filter.</p>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

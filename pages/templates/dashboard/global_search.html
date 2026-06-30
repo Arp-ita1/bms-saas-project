@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+
+{% block title %}Search Results | BMS{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Search Results</h1>
+        {% if q %}
+            <p>Showing results for: <strong>{{ q }}</strong></p>
+        {% else %}
+            <p>Search customers, employees, tasks, orders, invoices and appointments.</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="table-box mb-4">
+    <form method="get" action="/search/" class="row g-3">
+        <div class="col-md-10">
+            <input 
+                type="text" 
+                name="q" 
+                value="{{ q }}" 
+                placeholder="Search anything..."
+            >
+        </div>
+
+        <div class="col-md-2">
+            <button type="submit" class="btn-main w-100 justify-content-center">
+                <i class="bi bi-search"></i>
+                Search
+            </button>
+        </div>
+    </form>
+</div>
+
+{% if not q %}
+    <div class="empty-box table-box">
+        <i class="bi bi-search"></i>
+        <h5>Start searching</h5>
+        <p>Enter a name, phone, invoice number, order number, task or appointment.</p>
+    </div>
+{% endif %}
+
+{% if q %}
+
+<div class="row g-4">
+
+    <div class="col-lg-6">
+        <div class="data-panel">
+            <div class="panel-header">
+                <div>
+                    <h5>Customers</h5>
+                    <p>{{ customers|length }} results</p>
+                </div>
+            </div>
+
+            {% for customer in customers %}
+                <div class="search-result-item">
+                    <div>
+                        <strong>{{ customer.name }}</strong>
+                        <small>{{ customer.email|default:"-" }} | {{ customer.phone|default:"-" }}</small>
+                    </div>
+                    <a href="/customers/edit/{{ customer.id }}/">Open</a>
+                </div>
+            {% empty %}
+                <p class="text-muted mb-0">No customers found.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="data-panel">
+            <div class="panel-header">
+                <div>
+                    <h5>Employees</h5>
+                    <p>{{ employees|length }} results</p>
+                </div>
+            </div>
+
+            {% for employee in employees %}
+                <div class="search-result-item">
+                    <div>
+                        <strong>{{ employee.name }}</strong>
+                        <small>{{ employee.position }} | {{ employee.phone|default:"-" }}</small>
+                    </div>
+                    <a href="/employees/edit/{{ employee.id }}/">Open</a>
+                </div>
+            {% empty %}
+                <p class="text-muted mb-0">No employees found.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="data-panel">
+            <div class="panel-header">
+                <div>
+                    <h5>Tasks</h5>
+                    <p>{{ tasks|length }} results</p>
+                </div>
+            </div>
+
+            {% for task in tasks %}
+                <div class="search-result-item">
+                    <div>
+                        <strong>{{ task.title }}</strong>
+                        <small>{{ task.priority }} | {{ task.status }}</small>
+                    </div>
+                    <a href="/tasks/edit/{{ task.id }}/">Open</a>
+                </div>
+            {% empty %}
+                <p class="text-muted mb-0">No tasks found.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="data-panel">
+            <div class="panel-header">
+                <div>
+                    <h5>Orders</h5>
+                    <p>{{ orders|length }} results</p>
+                </div>
+            </div>
+
+            {% for order in orders %}
+                <div class="search-result-item">
+                    <div>
+                        <strong>{{ order.order_number }}</strong>
+                        <small>{{ order.customer.name }} | ₹{{ order.total_amount }}</small>
+                    </div>
+                    <a href="/orders/edit/{{ order.id }}/">Open</a>
+                </div>
+            {% empty %}
+                <p class="text-muted mb-0">No orders found.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="data-panel">
+            <div class="panel-header">
+                <div>
+                    <h5>Invoices</h5>
+                    <p>{{ invoices|length }} results</p>
+                </div>
+            </div>
+
+            {% for invoice in invoices %}
+                <div class="search-result-item">
+                    <div>
+                        <strong>{{ invoice.invoice_number }}</strong>
+                        <small>{{ invoice.customer.name }} | {{ invoice.status }}</small>
+                    </div>
+                    <a href="/invoices/detail/{{ invoice.id }}/">Open</a>
+                </div>
+            {% empty %}
+                <p class="text-muted mb-0">No invoices found.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="data-panel">
+            <div class="panel-header">
+                <div>
+                    <h5>Appointments</h5>
+                    <p>{{ appointments|length }} results</p>
+                </div>
+            </div>
+
+            {% for appointment in appointments %}
+                <div class="search-result-item">
+                    <div>
+                        <strong>{{ appointment.title }}</strong>
+                        <small>{{ appointment.customer.name }} | {{ appointment.status }}</small>
+                    </div>
+                    <a href="/appointments/edit/{{ appointment.id }}/">Open</a>
+                </div>
+            {% empty %}
+                <p class="text-muted mb-0">No appointments found.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

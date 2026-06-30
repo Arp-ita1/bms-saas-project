@@ -1,0 +1,177 @@
+{% extends "employee_portal/employee_base.html" %}
+
+{% block title %}Employee Dashboard | BMS{% endblock %}
+
+{% block content %}
+
+<section class="ep-hero">
+    <div class="ep-hero-content">
+        <span class="ep-badge">
+            <i class="bi bi-lightning-charge-fill"></i>
+            Employee Workspace
+        </span>
+
+        {% if employee %}
+            <h1>Welcome, {{ employee.name }}</h1>
+        {% else %}
+            <h1>Employee Dashboard</h1>
+        {% endif %}
+
+        <p>
+            Track assigned tasks, update task status and manage your work from one clean employee dashboard.
+        </p>
+
+        <div class="ep-hero-actions">
+            <a href="/employee-portal/tasks/" class="ep-btn primary">
+                <i class="bi bi-check2-square"></i>
+                View My Tasks
+            </a>
+
+            <a href="/employee-portal/profile/" class="ep-btn">
+                <i class="bi bi-person"></i>
+                My Profile
+            </a>
+        </div>
+    </div>
+
+    <div class="ep-hero-side">
+        <div class="ep-glass-card">
+            <span>Total Tasks</span>
+            <h3>{{ total_tasks }}</h3>
+            <p>Assigned to you</p>
+        </div>
+
+        <div class="ep-glass-card">
+            <span>High Priority</span>
+            <h3>{{ high_priority_tasks }}</h3>
+            <p>Important work items</p>
+        </div>
+    </div>
+</section>
+
+<section class="ep-stat-grid">
+    <div class="ep-stat-card one">
+        <div class="ep-stat-icon">
+            <i class="bi bi-list-check"></i>
+        </div>
+        <div>
+            <span>Total Tasks</span>
+            <h2>{{ total_tasks }}</h2>
+            <p>All assigned tasks</p>
+        </div>
+    </div>
+
+    <div class="ep-stat-card two">
+        <div class="ep-stat-icon">
+            <i class="bi bi-clock"></i>
+        </div>
+        <div>
+            <span>Pending</span>
+            <h2>{{ pending_tasks }}</h2>
+            <p>Waiting to start</p>
+        </div>
+    </div>
+
+    <div class="ep-stat-card three">
+        <div class="ep-stat-icon">
+            <i class="bi bi-arrow-repeat"></i>
+        </div>
+        <div>
+            <span>In Progress</span>
+            <h2>{{ in_progress_tasks }}</h2>
+            <p>Currently working</p>
+        </div>
+    </div>
+
+    <div class="ep-stat-card four">
+        <div class="ep-stat-icon">
+            <i class="bi bi-check-circle"></i>
+        </div>
+        <div>
+            <span>Completed</span>
+            <h2>{{ completed_tasks }}</h2>
+            <p>Finished tasks</p>
+        </div>
+    </div>
+</section>
+
+<section class="ep-grid-2">
+
+    <div class="ep-panel">
+        <div class="ep-panel-head">
+            <div>
+                <h4>Recent Tasks</h4>
+                <p>Your latest assigned work</p>
+            </div>
+
+            <a href="/employee-portal/tasks/">View All</a>
+        </div>
+
+        {% if recent_tasks %}
+            {% for task in recent_tasks %}
+                <div class="ep-task-row">
+                    <div>
+                        <strong>{{ task.title }}</strong>
+                        <small>{{ task.priority }} priority | Due: {{ task.due_date|default:"-" }}</small>
+                    </div>
+
+                    <span class="ep-badge-soft">{{ task.status }}</span>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="ep-empty">
+                <i class="bi bi-check2-square"></i>
+                <h5>No tasks assigned</h5>
+                <p>Your assigned tasks will appear here.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="ep-panel">
+        <div class="ep-panel-head">
+            <div>
+                <h4>Profile Summary</h4>
+                <p>Your employee information</p>
+            </div>
+        </div>
+
+        {% if employee %}
+            <div class="ep-task-row">
+                <div>
+                    <strong>Position</strong>
+                    <small>{{ employee.position }}</small>
+                </div>
+            </div>
+
+            <div class="ep-task-row">
+                <div>
+                    <strong>Email</strong>
+                    <small>{{ employee.email|default:"-" }}</small>
+                </div>
+            </div>
+
+            <div class="ep-task-row">
+                <div>
+                    <strong>Phone</strong>
+                    <small>{{ employee.phone|default:"-" }}</small>
+                </div>
+            </div>
+
+            <div class="ep-task-row">
+                <div>
+                    <strong>Status</strong>
+                    <small>{{ employee.status }}</small>
+                </div>
+            </div>
+        {% else %}
+            <div class="ep-empty">
+                <i class="bi bi-person-x"></i>
+                <h5>Profile not found</h5>
+                <p>Please contact business admin.</p>
+            </div>
+        {% endif %}
+    </div>
+
+</section>
+
+{% endblock %}

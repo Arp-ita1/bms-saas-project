@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Plans | BMS Platform{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Plans</h1>
+        <p>Pricing plans available for business registration.</p>
+    </div>
+
+    <a href="/admin/businesses/plan/add/" class="btn-main">
+        Add Plan
+    </a>
+</div>
+
+<div class="table-box">
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Plan</th>
+                    <th>Price</th>
+                    <th>Duration</th>
+                    <th>Customers</th>
+                    <th>Employees</th>
+                    <th>Invoices</th>
+                    <th>Active</th>
+                    <th width="100">Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for plan in plans %}
+                <tr>
+                    <td><strong>{{ plan.name }}</strong></td>
+                    <td>₹{{ plan.price }}</td>
+                    <td>{{ plan.duration_days }} days</td>
+                    <td>{{ plan.max_customers }}</td>
+                    <td>{{ plan.max_employees }}</td>
+                    <td>{{ plan.max_invoices }}</td>
+                    <td>{{ plan.is_active }}</td>
+                    <td>
+                        <a href="/admin/businesses/plan/{{ plan.id }}/change/" class="btn btn-sm btn-primary">
+                            Edit
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8">
+                        <p class="text-muted mb-0">No plans found. Add plans from Django admin.</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

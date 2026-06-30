@@ -1,0 +1,38 @@
+{% extends "auth_base.html" %}
+
+{% block title %}Register | BMS{% endblock %}
+
+{% block content %}
+
+<div class="auth-card">
+    <div class="auth-card-header">
+        <div class="mini-icon">
+            <i class="bi bi-person-plus"></i>
+        </div>
+
+        <h2>Create Account</h2>
+        <p>Register and start using the Business Management System.</p>
+    </div>
+
+    <form method="post" class="auth-form">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit" class="auth-btn">
+            Create Account <i class="bi bi-arrow-right"></i>
+        </button>
+    </form>
+
+    <div class="auth-bottom-text">
+        Already have an account?
+        <a href="/accounts/login/">Login here</a>
+    </div>
+
+    <div class="demo-note">
+        <i class="bi bi-shield-check"></i>
+        Your account will be used to access dashboard or customer portal based on role.
+    </div>
+</div>
+
+{% endblock %}

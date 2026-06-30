@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Customers | BMS{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Customers</h1>
+        <p>Manage customer records and customer portal accounts.</p>
+    </div>
+
+    <a href="/customers/add/" class="btn-main">
+        <i class="bi bi-plus-circle"></i>
+        Add Customer
+    </a>
+</div>
+
+<div class="table-box">
+
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-10">
+            <input 
+                type="text" 
+                name="q" 
+                value="{{ request.GET.q }}" 
+                placeholder="Search customer name, email, phone, company or city"
+            >
+        </div>
+
+        <div class="col-md-2">
+            <button type="submit" class="btn-main w-100 justify-content-center">
+                <i class="bi bi-search"></i>
+                Search
+            </button>
+        </div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Contact</th>
+                    <th>Company</th>
+                    <th>Location</th>
+                    <th>Portal Login</th>
+                    <th>Status</th>
+                    <th width="140">Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for customer in customers %}
+                <tr>
+                    <td>
+                        <strong>{{ customer.name }}</strong><br>
+                        <small class="text-muted">Added: {{ customer.created_at|date:"d M Y" }}</small>
+                    </td>
+
+                    <td>
+                        {{ customer.email|default:"-" }}<br>
+                        <small class="text-muted">{{ customer.phone|default:"-" }}</small>
+                    </td>
+
+                    <td>{{ customer.company_name|default:"-" }}</td>
+
+                    <td>
+                        {{ customer.city|default:"-" }}
+                        {% if customer.state %}
+                            , {{ customer.state }}
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if customer.user %}
+                            <span class="badge bg-success">{{ customer.user.username }}</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Not Created</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <span class="status-badge processing">{{ customer.status }}</span>
+                    </td>
+
+                    <td>
+                        <a href="/customers/edit/{{ customer.id }}/" class="btn btn-sm btn-primary">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+
+                        <a href="/customers/delete/{{ customer.id }}/" class="btn btn-sm btn-danger">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+
+                {% empty %}
+                <tr>
+                    <td colspan="7">
+                        <div class="empty-box">
+                            <i class="bi bi-people"></i>
+                            <h5>No customers found</h5>
+                            <p>Add your first customer before creating orders and invoices.</p>
+
+                            <a href="/customers/add/" class="btn-main">
+                                <i class="bi bi-plus-circle"></i>
+                                Add Customer
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}

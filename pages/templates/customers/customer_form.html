@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} | Customers{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>{{ title }}</h1>
+        <p>Add customer details and optionally create customer portal login.</p>
+    </div>
+
+    <a href="/customers/" class="btn btn-light">
+        <i class="bi bi-arrow-left"></i>
+        Back
+    </a>
+</div>
+
+<div class="form-box">
+
+    {% if customer and customer.user %}
+        <div class="alert alert-info mb-4">
+            This customer already has portal account:
+            <strong>{{ customer.user.username }}</strong>
+        </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                <label>Customer Name</label>
+                {{ form.name }}
+                {{ form.name.errors }}
+            </div>
+
+            <div class="col-md-6">
+                <label>Email</label>
+                {{ form.email }}
+                {{ form.email.errors }}
+            </div>
+
+            <div class="col-md-6">
+                <label>Phone</label>
+                {{ form.phone }}
+                {{ form.phone.errors }}
+            </div>
+
+            <div class="col-md-6">
+                <label>Company Name</label>
+                {{ form.company_name }}
+                {{ form.company_name.errors }}
+            </div>
+
+            <div class="col-md-6">
+                <label>City</label>
+                {{ form.city }}
+                {{ form.city.errors }}
+            </div>
+
+            <div class="col-md-6">
+                <label>State</label>
+                {{ form.state }}
+                {{ form.state.errors }}
+            </div>
+
+            <div class="col-md-6">
+                <label>Status</label>
+                {{ form.status }}
+                {{ form.status.errors }}
+            </div>
+
+            <div class="col-12">
+                <label>Address</label>
+                {{ form.address }}
+                {{ form.address.errors }}
+            </div>
+
+            {% if not customer or not customer.user %}
+                <div class="col-12 mt-3">
+                    <div class="admin-card">
+                        <h5 class="fw-bold mb-2">Customer Portal Account</h5>
+
+                        <p class="text-muted mb-3">
+                            Create login account only if this customer needs customer portal access.
+                        </p>
+
+                        <div class="form-check mb-3">
+                            {{ form.create_portal_account }}
+                            <label class="form-check-label">
+                                Create portal account for this customer
+                            </label>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label>Portal Username</label>
+                                {{ form.portal_username }}
+                                {{ form.portal_username.errors }}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Portal Password</label>
+                                {{ form.portal_password }}
+                                {{ form.portal_password.errors }}
+                            </div>
+                        </div>
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger mt-3">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="col-12 mt-4">
+                <button type="submit" class="btn-main">
+                    <i class="bi bi-check-circle"></i>
+                    Save Customer
+                </button>
+
+                <a href="/customers/" class="btn btn-secondary">
+                    Cancel
+                </a>
+            </div>
+
+        </div>
+    </form>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,921 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>{% block title %}Employee Portal | BMS{% endblock %}</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --ep-primary: #16a34a;
+            --ep-primary-2: #06b6d4;
+            --ep-purple: #7c3aed;
+            --ep-bg1: #effaf3;
+            --ep-bg2: #eef7ff;
+            --ep-card: rgba(255,255,255,0.80);
+            --ep-text: #0f172a;
+            --ep-muted: #64748b;
+            --ep-border: rgba(148,163,184,0.25);
+            --ep-shadow: 0 24px 60px rgba(15,23,42,0.12);
+            --ep-soft-shadow: 0 14px 35px rgba(15,23,42,0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            color: var(--ep-text);
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+            background:
+                radial-gradient(circle at 10% 8%, rgba(22,163,74,0.18), transparent 28%),
+                radial-gradient(circle at 92% 10%, rgba(6,182,212,0.17), transparent 30%),
+                radial-gradient(circle at 50% 96%, rgba(124,58,237,0.10), transparent 30%),
+                linear-gradient(135deg, var(--ep-bg1), var(--ep-bg2));
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .ep-overlay {
+            display: none;
+        }
+
+        .ep-sidebar {
+            position: fixed;
+            top: 18px;
+            left: 18px;
+            bottom: 18px;
+            width: 292px;
+            z-index: 1000;
+            padding: 18px;
+            overflow-y: auto;
+            background: linear-gradient(145deg, rgba(255,255,255,0.94), rgba(240,253,244,0.78));
+            border: 1px solid rgba(255,255,255,0.88);
+            box-shadow: var(--ep-shadow);
+            backdrop-filter: blur(24px);
+            border-radius: 34px;
+            transition: transform 0.25s ease, opacity 0.25s ease;
+        }
+
+        .ep-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px;
+            margin-bottom: 16px;
+            border-radius: 24px;
+            background: rgba(255,255,255,0.72);
+            border: 1px solid rgba(148,163,184,0.18);
+        }
+
+        .ep-brand-icon {
+            width: 58px;
+            height: 58px;
+            border-radius: 20px;
+            display: grid;
+            place-items: center;
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 950;
+            background:
+                radial-gradient(circle at 30% 20%, rgba(255,255,255,0.35), transparent 28%),
+                linear-gradient(135deg, var(--ep-primary), var(--ep-primary-2));
+            box-shadow: 0 14px 28px rgba(22,163,74,0.26);
+            flex-shrink: 0;
+        }
+
+        .ep-brand h4 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 950;
+            line-height: 1.1;
+        }
+
+        .ep-brand span {
+            color: var(--ep-muted);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .ep-nav-title {
+            margin: 17px 14px 9px;
+            color: #64748b;
+            font-size: 11px;
+            font-weight: 950;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .ep-link {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 13px 14px;
+            margin-bottom: 7px;
+            border-radius: 18px;
+            color: #334155;
+            font-size: 15px;
+            font-weight: 850;
+            transition: 0.2s ease;
+        }
+
+        .ep-link i {
+            width: 26px;
+            min-width: 26px;
+            text-align: center;
+            font-size: 19px;
+        }
+
+        .ep-link:hover {
+            background: rgba(22,163,74,0.08);
+            color: var(--ep-primary);
+        }
+
+        .ep-link.active {
+            color: #ffffff;
+            background:
+                radial-gradient(circle at top left, rgba(255,255,255,0.22), transparent 28%),
+                linear-gradient(135deg, var(--ep-primary), var(--ep-primary-2));
+            box-shadow: 0 14px 28px rgba(22,163,74,0.24);
+        }
+
+        .ep-sidebar-bottom {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(148,163,184,0.18);
+        }
+
+        .ep-logout {
+            color: #dc2626;
+        }
+
+        .ep-main {
+            margin-left: 328px;
+            min-height: 100vh;
+        }
+
+        .ep-topbar {
+            position: sticky;
+            top: 16px;
+            z-index: 900;
+            margin: 16px 18px 0;
+            min-height: 78px;
+            padding: 12px 18px;
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            background: rgba(255,255,255,0.76);
+            border: 1px solid rgba(255,255,255,0.88);
+            box-shadow: var(--ep-soft-shadow);
+            backdrop-filter: blur(22px);
+        }
+
+        .ep-top-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .ep-toggle {
+            width: 48px;
+            height: 48px;
+            border: none;
+            border-radius: 18px;
+            color: #ffffff;
+            background: linear-gradient(135deg, var(--ep-primary), var(--ep-primary-2));
+            display: grid;
+            place-items: center;
+            font-size: 20px;
+            box-shadow: 0 12px 22px rgba(22,163,74,0.22);
+        }
+
+        .ep-top-left h5 {
+            margin: 0;
+            font-size: 19px;
+            font-weight: 950;
+        }
+
+        .ep-top-left small {
+            color: var(--ep-muted);
+            font-weight: 750;
+        }
+
+        .ep-search {
+            flex: 1;
+            max-width: 500px;
+            min-width: 320px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 16px;
+            border-radius: 20px;
+            background: rgba(241,245,249,0.8);
+            border: 1px solid rgba(148,163,184,0.18);
+        }
+
+        .ep-search i {
+            color: var(--ep-primary);
+            font-size: 19px;
+        }
+
+        .ep-search input {
+            border: none;
+            outline: none;
+            background: transparent;
+            width: 100%;
+            color: var(--ep-text);
+            font-weight: 750;
+        }
+
+        .ep-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: max-content;
+            padding: 7px 12px 7px 7px;
+            border-radius: 22px;
+            background: rgba(255,255,255,0.86);
+            border: 1px solid rgba(148,163,184,0.18);
+        }
+
+        .ep-user-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 19px;
+            display: grid;
+            place-items: center;
+            color: #ffffff;
+            font-weight: 950;
+            background: linear-gradient(135deg, var(--ep-primary), var(--ep-primary-2));
+        }
+
+        .ep-user-meta {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .ep-user-meta strong {
+            font-weight: 950;
+        }
+
+        .ep-user-meta span {
+            color: var(--ep-muted);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .ep-content {
+            padding: 24px 18px 34px;
+        }
+
+        .ep-hero {
+            display: grid;
+            grid-template-columns: 1fr 310px;
+            gap: 24px;
+            margin-bottom: 22px;
+            padding: 32px;
+            border-radius: 34px;
+            overflow: hidden;
+            position: relative;
+            background:
+                radial-gradient(circle at 84% 14%, rgba(255,255,255,0.34), transparent 24%),
+                radial-gradient(circle at 12% 8%, rgba(6,182,212,0.22), transparent 25%),
+                linear-gradient(135deg, #16a34a, #06b6d4);
+            color: #ffffff;
+            box-shadow: var(--ep-shadow);
+        }
+
+        .ep-hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+            background-size: 34px 34px;
+            opacity: 0.24;
+        }
+
+        .ep-hero-content,
+        .ep-hero-side {
+            position: relative;
+            z-index: 2;
+        }
+
+        .ep-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #ffffff;
+            background: rgba(255,255,255,0.16);
+            border: 1px solid rgba(255,255,255,0.22);
+            border-radius: 999px;
+            padding: 9px 14px;
+            font-weight: 950;
+            font-size: 13px;
+        }
+
+        .ep-hero h1 {
+            margin: 16px 0 10px;
+            font-size: 42px;
+            font-weight: 950;
+            letter-spacing: -0.04em;
+        }
+
+        .ep-hero p {
+            max-width: 720px;
+            color: rgba(255,255,255,0.84);
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.6;
+        }
+
+        .ep-hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 11px;
+            margin-top: 22px;
+        }
+
+        .ep-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #ffffff !important;
+            background: rgba(255,255,255,0.16);
+            border: 1px solid rgba(255,255,255,0.22);
+            border-radius: 16px;
+            padding: 11px 15px;
+            font-weight: 950;
+        }
+
+        .ep-btn.primary {
+            background: #ffffff;
+            color: var(--ep-primary) !important;
+        }
+
+        .ep-glass-card {
+            background: rgba(255,255,255,0.18);
+            border: 1px solid rgba(255,255,255,0.24);
+            backdrop-filter: blur(18px);
+            border-radius: 24px;
+            padding: 22px;
+        }
+
+        .ep-glass-card span,
+        .ep-stat-card span {
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 950;
+        }
+
+        .ep-glass-card h3 {
+            color: #ffffff;
+            font-size: 30px;
+            font-weight: 950;
+            margin: 8px 0 4px;
+        }
+
+        .ep-glass-card p {
+            color: rgba(255,255,255,0.78);
+            margin: 0;
+        }
+
+        .ep-stat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0,1fr));
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+
+        .ep-stat-card,
+        .ep-panel,
+        .ep-form-card,
+        .ep-profile-card {
+            background: var(--ep-card);
+            border: 1px solid rgba(255,255,255,0.86);
+            box-shadow: var(--ep-soft-shadow);
+            backdrop-filter: blur(18px);
+            border-radius: 28px;
+            padding: 23px;
+        }
+
+        .ep-stat-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            min-height: 145px;
+        }
+
+        .ep-stat-icon {
+            width: 62px;
+            height: 62px;
+            border-radius: 22px;
+            color: #ffffff;
+            display: grid;
+            place-items: center;
+            font-size: 25px;
+            flex-shrink: 0;
+        }
+
+        .ep-stat-card.one .ep-stat-icon { background: linear-gradient(135deg,#16a34a,#86efac); }
+        .ep-stat-card.two .ep-stat-icon { background: linear-gradient(135deg,#f59e0b,#facc15); }
+        .ep-stat-card.three .ep-stat-icon { background: linear-gradient(135deg,#06b6d4,#67e8f9); }
+        .ep-stat-card.four .ep-stat-icon { background: linear-gradient(135deg,#7c3aed,#c084fc); }
+
+        .ep-stat-card h2 {
+            margin: 5px 0 2px;
+            font-size: 36px;
+            font-weight: 950;
+        }
+
+        .ep-stat-card p,
+        .ep-panel-head p {
+            color: var(--ep-muted);
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .ep-grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0,1fr));
+            gap: 22px;
+            margin-bottom: 22px;
+        }
+
+        .ep-panel-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 18px;
+        }
+
+        .ep-panel-head h4 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 950;
+        }
+
+        .ep-panel-head a {
+            color: var(--ep-primary);
+            font-weight: 950;
+        }
+
+        .ep-task-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(148,163,184,0.16);
+        }
+
+        .ep-task-row:last-child {
+            border-bottom: none;
+        }
+
+        .ep-task-row strong {
+            display: block;
+            font-weight: 950;
+        }
+
+        .ep-task-row small {
+            display: block;
+            color: var(--ep-muted);
+            font-weight: 700;
+        }
+
+        .ep-badge-soft {
+            padding: 6px 11px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 950;
+            color: #166534;
+            background: rgba(22,163,74,0.12);
+        }
+
+        .ep-empty {
+            text-align: center;
+            padding: 34px 14px;
+            color: var(--ep-muted);
+        }
+
+        .ep-empty i {
+            font-size: 42px;
+            color: var(--ep-primary);
+        }
+
+        .ep-empty h5 {
+            color: var(--ep-text);
+            font-weight: 950;
+            margin: 12px 0 4px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            border: 1px solid rgba(148,163,184,0.26);
+            background: rgba(255,255,255,0.86);
+            border-radius: 17px;
+            padding: 12px 14px;
+            outline: none;
+            color: var(--ep-text);
+            font-weight: 700;
+        }
+
+        label {
+            font-weight: 900;
+            color: #334155;
+            margin-bottom: 7px;
+        }
+
+        .ep-main-btn {
+            border: none;
+            color: #ffffff !important;
+            background: linear-gradient(135deg, var(--ep-primary), var(--ep-primary-2));
+            border-radius: 17px;
+            padding: 12px 18px;
+            font-weight: 950;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        @media(max-width: 1200px) {
+            .ep-hero {
+                grid-template-columns: 1fr;
+            }
+
+            .ep-stat-grid {
+                grid-template-columns: repeat(2, minmax(0,1fr));
+            }
+
+            .ep-grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width: 992px) {
+            .ep-sidebar {
+                top: 16px;
+                left: 16px;
+                right: 16px;
+                bottom: auto;
+                width: auto;
+                max-height: 82vh;
+                transform: translateY(-125%) scale(0.96);
+                opacity: 0;
+                transform-origin: top center;
+                border-radius: 32px;
+            }
+
+            .ep-sidebar.mobile-open {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+
+            .ep-main {
+                margin-left: 0;
+            }
+
+            .ep-overlay.show {
+                display: block;
+                position: fixed;
+                inset: 0;
+                z-index: 990;
+                background: rgba(15,23,42,0.34);
+                backdrop-filter: blur(5px);
+            }
+
+            .ep-topbar {
+                margin: 14px;
+                top: 12px;
+            }
+
+            .ep-content {
+                padding: 18px 14px 28px;
+            }
+
+            .ep-user-meta {
+                display: none;
+            }
+
+            .ep-search {
+                display: none;
+            }
+        }
+
+        @media(max-width: 768px) {
+            .ep-hero {
+                padding: 24px;
+                border-radius: 28px;
+            }
+
+            .ep-hero h1 {
+                font-size: 31px;
+            }
+
+            .ep-stat-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        /* Employee sidebar open close final fix */
+
+body.ep-sidebar-collapsed .ep-sidebar {
+    width: 100px;
+}
+
+body.ep-sidebar-collapsed .ep-main {
+    margin-left: 136px;
+}
+
+body.ep-sidebar-collapsed .ep-brand h4,
+body.ep-sidebar-collapsed .ep-brand span,
+body.ep-sidebar-collapsed .ep-link span,
+body.ep-sidebar-collapsed .ep-nav-title {
+    display: none !important;
+}
+
+body.ep-sidebar-collapsed .ep-brand {
+    justify-content: center;
+}
+
+body.ep-sidebar-collapsed .ep-link {
+    justify-content: center;
+}
+
+body.ep-sidebar-collapsed .ep-sidebar-bottom {
+    border-top: none;
+}
+
+@media(max-width: 992px) {
+    body.ep-sidebar-collapsed .ep-sidebar {
+        width: auto;
+    }
+
+    body.ep-sidebar-collapsed .ep-main {
+        margin-left: 0;
+    }
+
+    body.ep-sidebar-collapsed .ep-brand h4,
+    body.ep-sidebar-collapsed .ep-brand span,
+    body.ep-sidebar-collapsed .ep-link span,
+    body.ep-sidebar-collapsed .ep-nav-title {
+        display: block !important;
+    }
+
+    body.ep-sidebar-collapsed .ep-link {
+        justify-content: flex-start;
+    }
+
+    .ep-sidebar {
+        top: 16px !important;
+        left: 16px !important;
+        right: 16px !important;
+        bottom: auto !important;
+        width: auto !important;
+        max-height: 82vh !important;
+        transform: translateY(-130%) scale(0.96);
+        opacity: 0;
+        transform-origin: top center;
+        border-radius: 32px;
+        transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+
+    .ep-sidebar.mobile-open {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+
+    .ep-main {
+        margin-left: 0 !important;
+    }
+
+    .ep-overlay.show {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 990;
+        background: rgba(15, 23, 42, 0.35);
+        backdrop-filter: blur(6px);
+    }
+
+    body.ep-menu-open {
+        overflow: hidden;
+    }
+}
+    </style>
+</head>
+
+<body>
+
+<div class="ep-overlay" id="epOverlay"></div>
+
+<aside class="ep-sidebar" id="epSidebar">
+
+    <div class="ep-brand">
+        <div class="ep-brand-icon">
+            {% if business %}
+                {{ business.business_name|first|upper }}
+            {% else %}
+                E
+            {% endif %}
+        </div>
+
+        <div>
+            <h4>
+                {% if business %}
+                    {{ business.business_name }}
+                {% else %}
+                    Employee Portal
+                {% endif %}
+            </h4>
+            <span>Employee Workspace</span>
+        </div>
+    </div>
+
+    <nav>
+        <a href="/employee-portal/" class="ep-link {% if request.path == '/employee-portal/' %}active{% endif %}">
+            <i class="bi bi-grid-1x2-fill"></i>
+            <span>Dashboard</span>
+        </a>
+
+        <div class="ep-nav-title">Work</div>
+
+        <a href="/employee-portal/tasks/" class="ep-link {% if '/employee-portal/tasks/' in request.path %}active{% endif %}">
+            <i class="bi bi-check2-square"></i>
+            <span>My Tasks</span>
+        </a>
+
+        <a href="/employee-portal/profile/" class="ep-link {% if '/employee-portal/profile/' in request.path %}active{% endif %}">
+            <i class="bi bi-person"></i>
+            <span>My Profile</span>
+        </a>
+
+        <div class="ep-sidebar-bottom">
+            <a href="/accounts/logout/" class="ep-link ep-logout">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </nav>
+
+</aside>
+
+<main class="ep-main">
+
+    <header class="ep-topbar">
+        <div class="ep-top-left">
+            <button class="ep-toggle" id="epToggle" type="button">
+    <i class="bi bi-grid-3x3-gap-fill"></i>
+</button>
+
+            <div>
+                <h5>
+                    {% if employee %}
+                        {{ employee.name }}
+                    {% else %}
+                        Employee Dashboard
+                    {% endif %}
+                </h5>
+                <small>Manage your assigned work</small>
+            </div>
+        </div>
+
+        <form method="get" action="/employee-portal/tasks/" class="ep-search">
+            <i class="bi bi-search"></i>
+            <input type="text" name="q" placeholder="Search your tasks...">
+        </form>
+
+        <div class="ep-user">
+            <div class="ep-user-avatar">
+                {{ request.user.username|first|upper }}
+            </div>
+
+            <div class="ep-user-meta">
+                <strong>{{ request.user.username }}</strong>
+                <span>Employee</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="ep-content">
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </section>
+
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const epSidebar = document.getElementById("epSidebar");
+        const epToggle = document.getElementById("epToggle");
+        const epOverlay = document.getElementById("epOverlay");
+
+        if (!epSidebar || !epToggle || !epOverlay) {
+            return;
+        }
+
+        function isMobile() {
+            return window.innerWidth <= 992;
+        }
+
+        function openMobileMenu() {
+            epSidebar.classList.add("mobile-open");
+            epOverlay.classList.add("show");
+            document.body.classList.add("ep-menu-open");
+        }
+
+        function closeMobileMenu() {
+            epSidebar.classList.remove("mobile-open");
+            epOverlay.classList.remove("show");
+            document.body.classList.remove("ep-menu-open");
+        }
+
+        function toggleDesktopMenu() {
+            document.body.classList.toggle("ep-sidebar-collapsed");
+
+            if (document.body.classList.contains("ep-sidebar-collapsed")) {
+                localStorage.setItem("employeeSidebarCollapsed", "yes");
+            } else {
+                localStorage.setItem("employeeSidebarCollapsed", "no");
+            }
+        }
+
+        function toggleMenu() {
+            if (isMobile()) {
+                if (epSidebar.classList.contains("mobile-open")) {
+                    closeMobileMenu();
+                } else {
+                    openMobileMenu();
+                }
+            } else {
+                toggleDesktopMenu();
+            }
+        }
+
+        if (localStorage.getItem("employeeSidebarCollapsed") === "yes" && !isMobile()) {
+            document.body.classList.add("ep-sidebar-collapsed");
+        }
+
+        epToggle.addEventListener("click", function (event) {
+            event.preventDefault();
+            toggleMenu();
+        });
+
+        epOverlay.addEventListener("click", function () {
+            closeMobileMenu();
+        });
+
+        document.querySelectorAll(".ep-link").forEach(function (link) {
+            link.addEventListener("click", function () {
+                if (isMobile()) {
+                    closeMobileMenu();
+                }
+            });
+        });
+
+        window.addEventListener("resize", function () {
+            if (!isMobile()) {
+                closeMobileMenu();
+
+                if (localStorage.getItem("employeeSidebarCollapsed") === "yes") {
+                    document.body.classList.add("ep-sidebar-collapsed");
+                }
+            } else {
+                document.body.classList.remove("ep-sidebar-collapsed");
+            }
+        });
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

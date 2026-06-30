@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Notifications | BMS Admin{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Notifications</h1>
+        <p>Manage customer and system notifications.</p>
+    </div>
+
+    <a href="/notifications/add/" class="btn-main">
+        <i class="bi bi-bell"></i>
+        Add Notification
+    </a>
+</div>
+
+<div class="table-box">
+    <div class="notification-grid">
+        {% for notification in notifications %}
+            <div class="notification-card">
+                <div class="notification-icon">
+                    <i class="bi bi-bell-fill"></i>
+                </div>
+
+                <div class="notification-content">
+                    <h5>{{ notification.title|default:"Notification" }}</h5>
+                    <p>{{ notification.message }}</p>
+
+                    <div class="notification-meta">
+                        <span>
+                            <i class="bi bi-person"></i>
+                            {{ notification.user|default:"All Users" }}
+                        </span>
+                        <span>
+                            <i class="bi bi-clock"></i>
+                            {{ notification.created_at|date:"d M Y" }}
+                        </span>
+                    </div>
+
+                    <a href="/notifications/delete/{{ notification.id }}/" class="btn btn-sm btn-danger mt-3">
+                        <i class="bi bi-trash"></i>
+                        Delete
+                    </a>
+                </div>
+            </div>
+        {% empty %}
+            <div class="empty-box">
+                <i class="bi bi-bell"></i>
+                <h5>No notifications found</h5>
+                <p>Create notifications for customers or business updates.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

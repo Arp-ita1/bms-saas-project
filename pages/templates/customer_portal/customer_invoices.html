@@ -1,0 +1,84 @@
+{% extends "customer_portal/customer_base.html" %}
+
+{% block title %}My Invoices | Customer Portal{% endblock %}
+
+{% block content %}
+
+<section class="cp-hero">
+    <div class="cp-hero-content">
+        <span class="cp-badge">
+            <i class="bi bi-receipt"></i>
+            My Invoices
+        </span>
+
+        <h1>My Invoices</h1>
+
+        <p>
+            View invoice details, billing amount, paid amount and pending payment.
+        </p>
+    </div>
+
+    <div class="cp-hero-side">
+        <div class="cp-glass-card">
+            <span>Total Records</span>
+            <h3>{{ invoices|length }}</h3>
+            <p>Filtered invoices</p>
+        </div>
+    </div>
+</section>
+
+<div class="cp-panel mb-4">
+    <form method="get" class="row g-3">
+        <div class="col-md-7">
+            <input type="text" name="q" value="{{ q|default:'' }}" placeholder="Search invoice number">
+        </div>
+
+        <div class="col-md-3">
+            <select name="status">
+                <option value="">All Status</option>
+                <option value="Unpaid" {% if status == "Unpaid" %}selected{% endif %}>Unpaid</option>
+                <option value="Partial" {% if status == "Partial" %}selected{% endif %}>Partial</option>
+                <option value="Paid" {% if status == "Paid" %}selected{% endif %}>Paid</option>
+                <option value="Cancelled" {% if status == "Cancelled" %}selected{% endif %}>Cancelled</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <button type="submit" class="cp-main-btn w-100 justify-content-center">
+                Filter
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="cp-panel">
+    <div class="cp-panel-head">
+        <div>
+            <h4>Invoice List</h4>
+            <p>Your billing records</p>
+        </div>
+    </div>
+
+    {% if invoices %}
+        {% for invoice in invoices %}
+            <div class="cp-row">
+                <div>
+                    <strong>{{ invoice.invoice_number }}</strong>
+                    <small>Total: ₹{{ invoice.total_amount }} | Pending: ₹{{ invoice.pending_amount }}</small>
+                </div>
+
+                <a href="/customer-portal/invoices/{{ invoice.id }}/" class="cp-main-btn">
+                    View
+                </a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="cp-empty">
+            <i class="bi bi-receipt"></i>
+            <h5>No invoices found</h5>
+            <p>No invoice matches your filter.</p>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

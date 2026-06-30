@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Delete Order | BMS{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Delete Order</h1>
+        <p>Confirm order deletion from your business workspace.</p>
+    </div>
+</div>
+
+<div class="form-box">
+    <h4 class="fw-bold mb-3">Are you sure?</h4>
+
+    <p>
+        You are about to delete order:
+        <strong>{{ order.order_number }}</strong>
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <button type="submit" class="btn btn-danger">
+            <i class="bi bi-trash"></i>
+            Yes, Delete
+        </button>
+
+        <a href="/orders/" class="btn btn-secondary">
+            Cancel
+        </a>
+    </form>
+</div>
+
+{% endblock %}

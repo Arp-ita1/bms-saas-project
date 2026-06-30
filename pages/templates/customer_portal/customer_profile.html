@@ -1,0 +1,93 @@
+{% extends "customer_portal/customer_base.html" %}
+
+{% block title %}My Profile | Customer Portal{% endblock %}
+
+{% block content %}
+
+<section class="cp-hero">
+    <div class="cp-hero-content">
+        <span class="cp-badge">
+            <i class="bi bi-person-circle"></i>
+            Customer Profile
+        </span>
+
+        {% if customer %}
+            <h1>{{ customer.name }}</h1>
+        {% else %}
+            <h1>My Profile</h1>
+        {% endif %}
+
+        <p>
+            View your customer information connected with this business.
+        </p>
+    </div>
+
+    <div class="cp-hero-side">
+        <div class="cp-glass-card">
+            <span>Status</span>
+            <h3>{{ customer.status|default:"Active" }}</h3>
+            <p>Customer account</p>
+        </div>
+    </div>
+</section>
+
+{% if customer %}
+    <div class="cp-profile-card">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <label>Name</label>
+                <div class="cp-row">
+                    <div><strong>{{ customer.name }}</strong></div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label>Email</label>
+                <div class="cp-row">
+                    <div><strong>{{ customer.email|default:"-" }}</strong></div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label>Phone</label>
+                <div class="cp-row">
+                    <div><strong>{{ customer.phone|default:"-" }}</strong></div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label>Company</label>
+                <div class="cp-row">
+                    <div><strong>{{ customer.company_name|default:"-" }}</strong></div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label>City</label>
+                <div class="cp-row">
+                    <div><strong>{{ customer.city|default:"-" }}</strong></div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label>State</label>
+                <div class="cp-row">
+                    <div><strong>{{ customer.state|default:"-" }}</strong></div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <label>Address</label>
+                <div class="cp-row">
+                    <div><strong>{{ customer.address|default:"-" }}</strong></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="alert alert-danger">
+        Customer profile not found. Please contact business admin.
+    </div>
+{% endif %}
+
+{% endblock %}

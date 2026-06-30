@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Business Settings | BMS Admin{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Business Settings</h1>
+        <p>Update company information used in dashboard and invoice pages.</p>
+    </div>
+</div>
+
+<div class="settings-layout">
+    <div class="settings-info-card">
+        <div class="settings-icon">
+            <i class="bi bi-building-gear"></i>
+        </div>
+
+        <h3>Company Profile</h3>
+        <p>
+            Keep your business name, contact details and address updated.
+            These details can be displayed on invoices and business pages.
+        </p>
+
+        <div class="settings-points">
+            <div>
+                <i class="bi bi-check-circle"></i>
+                Business identity
+            </div>
+            <div>
+                <i class="bi bi-check-circle"></i>
+                Invoice details
+            </div>
+            <div>
+                <i class="bi bi-check-circle"></i>
+                Customer contact information
+            </div>
+        </div>
+    </div>
+
+    <div class="form-box settings-form-card">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <div class="d-flex gap-2 flex-wrap mt-4">
+                <button type="submit" class="btn-main">
+                    <i class="bi bi-check-circle"></i>
+                    Save Settings
+                </button>
+
+                <a href="/dashboard/" class="btn btn-secondary">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

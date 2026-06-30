@@ -1,0 +1,87 @@
+{% extends "public_base.html" %}
+
+{% block title %}Pricing | BMS{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+    <div class="container">
+        <div class="section-badge">
+            <i class="bi bi-currency-rupee"></i>
+            Demo pricing
+        </div>
+        <h1 class="page-hero-title">
+            Simple plans for <span class="gradient-text">business system demo.</span>
+        </h1>
+        <p class="page-hero-text">
+            This pricing page makes the public website look complete and client-ready.
+        </p>
+    </div>
+</section>
+
+<section class="section pt-2">
+    <div class="container">
+        <div class="row g-4 align-items-stretch">
+            <div class="col-lg-4">
+                <div class="price-card">
+                    <span class="price-label">Basic</span>
+                    <h3>Starter BMS</h3>
+                    <div class="price">₹4,999</div>
+                    <p class="text-secondary">For small businesses needing simple records and task tracking.</p>
+
+                    <ul>
+                        <li><i class="bi bi-check-circle-fill"></i> Customer management</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Employee management</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Task management</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Basic dashboard</li>
+                    </ul>
+
+<a href="/business/register/?plan=Basic Plan" class="btn-ai">
+    Start Basic
+</a>                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="price-card featured">
+                    <span class="price-label">Most Popular</span>
+                    <h3>Professional BMS</h3>
+                    <div class="price">₹9,999</div>
+                    <p class="text-secondary">For businesses needing order, appointment and invoice handling.</p>
+
+                    <ul>
+                        <li><i class="bi bi-check-circle-fill"></i> Everything in Basic</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Order management</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Appointment scheduling</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Invoice print system</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Notifications</li>
+                    </ul>
+
+<a href="/business/register/?plan=Professional Plan" class="btn-ai">
+    Start Professional
+</a>                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="price-card">
+                    <span class="price-label">Advanced</span>
+                    <h3>Business BMS</h3>
+                    <div class="price">₹14,999</div>
+                    <p class="text-secondary">For complete admin and customer portal-based business systems.</p>
+
+                    <ul>
+                        <li><i class="bi bi-check-circle-fill"></i> Everything in Professional</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Customer portal</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Business settings</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Activity logs</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Premium UI styling</li>
+                    </ul>
+
+<a href="/business/register/?plan=Business Plan" class="btn-ai">
+    Start Business
+</a>                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Business Detail | BMS Platform{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>{{ business.business_name }}</h1>
+        <p>Business, owner and subscription details.</p>
+    </div>
+
+    <a href="/platform/businesses/" class="btn btn-secondary">Back</a>
+</div>
+
+<div class="admin-card mb-4">
+    <h4 class="fw-bold mb-3">Business Information</h4>
+
+    <div class="row g-3">
+        <div class="col-md-4">
+            <strong>Business Name</strong><br>
+            {{ business.business_name }}
+        </div>
+
+        <div class="col-md-4">
+            <strong>Owner</strong><br>
+            {{ business.owner.username }}
+        </div>
+
+        <div class="col-md-4">
+            <strong>Business Type</strong><br>
+            {{ business.business_type|default:"-" }}
+        </div>
+
+        <div class="col-md-4">
+            <strong>Email</strong><br>
+            {{ business.email }}
+        </div>
+
+        <div class="col-md-4">
+            <strong>Phone</strong><br>
+            {{ business.phone }}
+        </div>
+
+        <div class="col-md-4">
+            <strong>City</strong><br>
+            {{ business.city|default:"-" }}
+        </div>
+
+        <div class="col-12">
+            <strong>Address</strong><br>
+            {{ business.address|default:"-" }}
+        </div>
+    </div>
+</div>
+
+<div class="form-box">
+    <h4 class="fw-bold mb-3">Update Status</h4>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <label>Business Status</label>
+        <select name="business_status" class="mb-3">
+            <option value="Active" {% if business.status == "Active" %}selected{% endif %}>Active</option>
+            <option value="Inactive" {% if business.status == "Inactive" %}selected{% endif %}>Inactive</option>
+            <option value="Suspended" {% if business.status == "Suspended" %}selected{% endif %}>Suspended</option>
+            <option value="Expired" {% if business.status == "Expired" %}selected{% endif %}>Expired</option>
+        </select>
+
+        {% if subscription %}
+            <label>Subscription Status</label>
+            <select name="subscription_status" class="mb-3">
+                <option value="Trial" {% if subscription.status == "Trial" %}selected{% endif %}>Trial</option>
+                <option value="Active" {% if subscription.status == "Active" %}selected{% endif %}>Active</option>
+                <option value="Expired" {% if subscription.status == "Expired" %}selected{% endif %}>Expired</option>
+                <option value="Cancelled" {% if subscription.status == "Cancelled" %}selected{% endif %}>Cancelled</option>
+            </select>
+
+            <label>Payment Status</label>
+            <select name="payment_status" class="mb-3">
+                <option value="Pending" {% if subscription.payment_status == "Pending" %}selected{% endif %}>Pending</option>
+                <option value="Paid" {% if subscription.payment_status == "Paid" %}selected{% endif %}>Paid</option>
+                <option value="Failed" {% if subscription.payment_status == "Failed" %}selected{% endif %}>Failed</option>
+            </select>
+        {% else %}
+            <input type="hidden" name="subscription_status" value="Trial">
+            <input type="hidden" name="payment_status" value="Pending">
+        {% endif %}
+
+        <button type="submit" class="btn-main mt-3">
+            Update Business
+        </button>
+    </form>
+</div>
+
+{% endblock %}

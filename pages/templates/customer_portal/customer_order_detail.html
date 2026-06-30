@@ -1,0 +1,74 @@
+{% extends "customer_portal/customer_base.html" %}
+
+{% block title %}Order Detail | Customer Portal{% endblock %}
+
+{% block content %}
+
+<section class="cp-hero">
+    <div class="cp-hero-content">
+        <span class="cp-badge">
+            <i class="bi bi-bag-check"></i>
+            Order Detail
+        </span>
+
+        <h1>{{ order.order_number }}</h1>
+
+        <p>{{ order.title }}</p>
+
+        <div class="cp-hero-actions">
+            <a href="/customer-portal/orders/" class="cp-btn primary">
+                <i class="bi bi-arrow-left"></i>
+                Back to Orders
+            </a>
+        </div>
+    </div>
+
+    <div class="cp-hero-side">
+        <div class="cp-glass-card">
+            <span>Status</span>
+            <h3>{{ order.status }}</h3>
+            <p>Order amount: ₹{{ order.total_amount }}</p>
+        </div>
+    </div>
+</section>
+
+<div class="cp-profile-card">
+    <div class="row g-4">
+        <div class="col-md-6">
+            <label>Order Number</label>
+            <div class="cp-row">
+                <div><strong>{{ order.order_number }}</strong></div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <label>Status</label>
+            <div class="cp-row">
+                <div><strong>{{ order.status }}</strong></div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <label>Order Date</label>
+            <div class="cp-row">
+                <div><strong>{{ order.order_date }}</strong></div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <label>Total Amount</label>
+            <div class="cp-row">
+                <div><strong>₹{{ order.total_amount }}</strong></div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <label>Description</label>
+            <div class="cp-row">
+                <div><strong>{{ order.description|default:"-" }}</strong></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

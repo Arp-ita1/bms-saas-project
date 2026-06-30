@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Subscriptions | BMS Platform{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Subscriptions</h1>
+        <p>Track plans, payment status and subscription status.</p>
+    </div>
+</div>
+
+<div class="table-box">
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-6">
+            <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Search business, owner or plan">
+        </div>
+
+        <div class="col-md-2">
+            <select name="status">
+                <option value="">All Status</option>
+                <option value="Trial" {% if status == "Trial" %}selected{% endif %}>Trial</option>
+                <option value="Active" {% if status == "Active" %}selected{% endif %}>Active</option>
+                <option value="Expired" {% if status == "Expired" %}selected{% endif %}>Expired</option>
+                <option value="Cancelled" {% if status == "Cancelled" %}selected{% endif %}>Cancelled</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <select name="payment_status">
+                <option value="">All Payments</option>
+                <option value="Pending" {% if payment_status == "Pending" %}selected{% endif %}>Pending</option>
+                <option value="Paid" {% if payment_status == "Paid" %}selected{% endif %}>Paid</option>
+                <option value="Failed" {% if payment_status == "Failed" %}selected{% endif %}>Failed</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <button type="submit" class="btn-main w-100 justify-content-center">
+                Search
+            </button>
+        </div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Business</th>
+                    <th>Plan</th>
+                    <th>Price</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Status</th>
+                    <th>Payment</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for subscription in subscriptions %}
+                <tr>
+                    <td>{{ subscription.business.business_name }}</td>
+                    <td>{{ subscription.plan.name|default:"-" }}</td>
+                    <td>₹{{ subscription.plan.price|default:"0" }}</td>
+                    <td>{{ subscription.start_date }}</td>
+                    <td>{{ subscription.end_date }}</td>
+                    <td>{{ subscription.status }}</td>
+                    <td>{{ subscription.payment_status }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7">
+                        <p class="text-muted mb-0">No subscriptions found.</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

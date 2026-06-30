@@ -1,0 +1,181 @@
+{% extends "public_base.html" %}
+
+{% block title %}Contact | BMS{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+    <div class="container">
+        <div class="section-badge">
+            <i class="bi bi-chat-dots"></i>
+            Contact BMS Support
+        </div>
+
+        <h1 class="page-hero-title">
+            Need help choosing the right <span class="gradient-text">BMS plan?</span>
+        </h1>
+
+        <p class="page-hero-text">
+            Request a demo, ask about pricing, or get help setting up your business management dashboard.
+        </p>
+    </div>
+</section>
+
+<section class="section pt-2">
+    <div class="container">
+        <div class="row g-4">
+
+            <div class="col-lg-5">
+                <div class="contact-card h-100">
+                    <h3 class="fw-bold mb-4">BMS Support Information</h3>
+
+                    <div class="info-line">
+                        <i class="bi bi-geo-alt"></i>
+                        <div>
+                            <strong>Location</strong>
+                            <span>Ahmedabad, Gujarat, India</span>
+                        </div>
+                    </div>
+
+                    <div class="info-line">
+                        <i class="bi bi-envelope"></i>
+                        <div>
+                            <strong>Email</strong>
+                            <span>support@bmsdemo.com</span>
+                        </div>
+                    </div>
+
+                    <div class="info-line">
+                        <i class="bi bi-telephone"></i>
+                        <div>
+                            <strong>Phone</strong>
+                            <span>+91 98765 43210</span>
+                        </div>
+                    </div>
+
+                    <div class="info-line">
+                        <i class="bi bi-clock"></i>
+                        <div>
+                            <strong>Support Hours</strong>
+                            <span>Monday to Saturday, 10:00 AM to 7:00 PM</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 p-4 rounded-4" style="background:rgba(79,140,255,0.12); border:1px solid rgba(255,255,255,0.12);">
+                        <h5 class="fw-bold">What can we help with?</h5>
+                        <p class="text-secondary mb-0">
+                            You can contact us for BMS demo, pricing details, subscription support, business setup help, or technical support.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="contact-card">
+                    <h3 class="fw-bold mb-4">Send BMS Inquiry</h3>
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success mb-4">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post" class="contact-form">
+                        {% csrf_token %}
+
+                        <div class="row g-3">
+
+                            <div class="col-md-6">
+                                <label>Full Name</label>
+                                <input 
+                                    type="text" 
+                                    name="name" 
+                                    placeholder="Enter your full name"
+                                    required
+                                >
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Business Name</label>
+                                <input 
+                                    type="text" 
+                                    name="business_name" 
+                                    placeholder="Enter your business name"
+                                >
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Email</label>
+                                <input 
+                                    type="email" 
+                                    name="email" 
+                                    placeholder="Enter your email"
+                                    required
+                                >
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Phone</label>
+                                <input 
+                                    type="text" 
+                                    name="phone" 
+                                    placeholder="Enter phone number"
+                                    required
+                                >
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Inquiry Type</label>
+                                <select name="service" required>
+                                    <option value="">Select inquiry type</option>
+                                    <option value="BMS Demo Request">BMS Demo Request</option>
+                                    <option value="Pricing Inquiry">Pricing / Plan Inquiry</option>
+                                    <option value="Subscription Inquiry">Subscription Inquiry</option>
+                                    <option value="Business Setup Help">Business Setup Help</option>
+                                    <option value="Enterprise Plan Inquiry">Enterprise Plan Inquiry</option>
+                                    <option value="Technical Support">Technical Support</option>
+                                    <option value="Feature Request">Feature Request</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Preferred Plan</label>
+                                <select name="preferred_plan">
+                                    <option value="">Select plan optional</option>
+                                    <option value="Basic Plan">Basic Plan</option>
+                                    <option value="Professional Plan">Professional Plan</option>
+                                    <option value="Business Plan">Business Plan</option>
+                                    <option value="Enterprise Plan">Enterprise Plan</option>
+                                    <option value="Not Sure">Not Sure</option>
+                                </select>
+                            </div>
+
+                            <div class="col-12">
+                                <label>Message</label>
+                                <textarea 
+                                    name="message" 
+                                    placeholder="Tell us what you need help with. Example: I want a BMS demo for my business."
+                                    required
+                                ></textarea>
+                            </div>
+
+                            <div class="col-12">
+                                <button type="submit" class="btn-ai">
+                                    Submit Inquiry <i class="bi bi-send"></i>
+                                </button>
+                            </div>
+
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

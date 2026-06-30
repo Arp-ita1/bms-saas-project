@@ -1,0 +1,167 @@
+{% extends "customer_portal/customer_base.html" %}
+
+{% block title %}Customer Dashboard | BMS{% endblock %}
+
+{% block content %}
+
+<section class="cp-hero">
+    <div class="cp-hero-content">
+        <span class="cp-badge">
+            <i class="bi bi-person-heart"></i>
+            Customer Workspace
+        </span>
+
+        {% if customer %}
+            <h1>Welcome, {{ customer.name }}</h1>
+        {% else %}
+            <h1>Customer Dashboard</h1>
+        {% endif %}
+
+        <p>
+            Track your orders, invoices and pending payments from your personal customer dashboard.
+        </p>
+
+        <div class="cp-hero-actions">
+            <a href="/customer-portal/orders/" class="cp-btn primary">
+                <i class="bi bi-bag-check"></i>
+                My Orders
+            </a>
+
+            <a href="/customer-portal/invoices/" class="cp-btn">
+                <i class="bi bi-receipt"></i>
+                My Invoices
+            </a>
+
+            <a href="/customer-portal/profile/" class="cp-btn">
+                <i class="bi bi-person"></i>
+                My Profile
+            </a>
+        </div>
+    </div>
+
+    <div class="cp-hero-side">
+        <div class="cp-glass-card">
+            <span>Pending Payment</span>
+            <h3>₹{{ total_pending_amount }}</h3>
+            <p>Remaining amount</p>
+        </div>
+
+        <div class="cp-glass-card">
+            <span>Total Orders</span>
+            <h3>{{ total_orders }}</h3>
+            <p>Your order records</p>
+        </div>
+    </div>
+</section>
+
+<section class="cp-stat-grid">
+    <div class="cp-stat-card one">
+        <div class="cp-stat-icon">
+            <i class="bi bi-bag-check"></i>
+        </div>
+        <div>
+            <span>Total Orders</span>
+            <h2>{{ total_orders }}</h2>
+            <p>All your orders</p>
+        </div>
+    </div>
+
+    <div class="cp-stat-card two">
+        <div class="cp-stat-icon">
+            <i class="bi bi-hourglass-split"></i>
+        </div>
+        <div>
+            <span>Pending Orders</span>
+            <h2>{{ pending_orders }}</h2>
+            <p>Currently pending</p>
+        </div>
+    </div>
+
+    <div class="cp-stat-card three">
+        <div class="cp-stat-icon">
+            <i class="bi bi-receipt"></i>
+        </div>
+        <div>
+            <span>Total Invoices</span>
+            <h2>{{ total_invoices }}</h2>
+            <p>Your billing records</p>
+        </div>
+    </div>
+
+    <div class="cp-stat-card four">
+        <div class="cp-stat-icon">
+            <i class="bi bi-cash-coin"></i>
+        </div>
+        <div>
+            <span>Pending Amount</span>
+            <h2>₹{{ total_pending_amount }}</h2>
+            <p>Amount to pay</p>
+        </div>
+    </div>
+</section>
+
+<section class="cp-grid-2">
+
+    <div class="cp-panel">
+        <div class="cp-panel-head">
+            <div>
+                <h4>Recent Orders</h4>
+                <p>Your latest orders</p>
+            </div>
+
+            <a href="/customer-portal/orders/">View All</a>
+        </div>
+
+        {% if recent_orders %}
+            {% for order in recent_orders %}
+                <div class="cp-row">
+                    <div>
+                        <strong>{{ order.order_number }}</strong>
+                        <small>{{ order.title }} | ₹{{ order.total_amount }}</small>
+                    </div>
+
+                    <span class="cp-badge-soft">{{ order.status }}</span>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="cp-empty">
+                <i class="bi bi-bag"></i>
+                <h5>No orders yet</h5>
+                <p>Your orders will appear here.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="cp-panel">
+        <div class="cp-panel-head">
+            <div>
+                <h4>Recent Invoices</h4>
+                <p>Your latest invoices</p>
+            </div>
+
+            <a href="/customer-portal/invoices/">View All</a>
+        </div>
+
+        {% if recent_invoices %}
+            {% for invoice in recent_invoices %}
+                <div class="cp-row">
+                    <div>
+                        <strong>{{ invoice.invoice_number }}</strong>
+                        <small>Total: ₹{{ invoice.total_amount }} | Pending: ₹{{ invoice.pending_amount }}</small>
+                    </div>
+
+                    <span class="cp-badge-soft">{{ invoice.status }}</span>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="cp-empty">
+                <i class="bi bi-receipt"></i>
+                <h5>No invoices yet</h5>
+                <p>Your invoices will appear here.</p>
+            </div>
+        {% endif %}
+    </div>
+
+</section>
+
+{% endblock %}

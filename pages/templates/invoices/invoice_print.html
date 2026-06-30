@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Print Invoice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #111827;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .print-wrap {
+            max-width: 950px;
+            margin: auto;
+            background: white;
+            border-radius: 18px;
+            padding: 36px;
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.10);
+        }
+
+        .print-action {
+            max-width: 950px;
+            margin: 0 auto 18px;
+            text-align: right;
+        }
+
+        .print-action button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 18px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            border-bottom: 2px solid #111827;
+            padding-bottom: 22px;
+            margin-bottom: 28px;
+        }
+
+        .brand-box h2 {
+            margin: 0 0 8px;
+            font-size: 28px;
+        }
+
+        .brand-box p,
+        .invoice-info p,
+        .bill-to p {
+            margin: 4px 0;
+            color: #4b5563;
+        }
+
+        .invoice-info {
+            text-align: right;
+        }
+
+        .invoice-info h1 {
+            margin: 0 0 8px;
+            font-size: 40px;
+            letter-spacing: -1px;
+        }
+
+        .bill-to {
+            margin-bottom: 28px;
+        }
+
+        .bill-to h4 {
+            margin-bottom: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 18px;
+        }
+
+        th {
+            background: #f8fafc;
+            text-align: left;
+            font-weight: 800;
+        }
+
+        th, td {
+            border: 1px solid #e5e7eb;
+            padding: 12px;
+        }
+
+        .text-end {
+            text-align: right;
+        }
+
+        .summary {
+            width: 360px;
+            margin-left: auto;
+            margin-top: 24px;
+        }
+
+        .summary div {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .summary .total {
+            font-size: 20px;
+            font-weight: 900;
+            border-bottom: 2px solid #111827;
+        }
+
+        .thanks {
+            margin-top: 38px;
+            padding-top: 18px;
+            border-top: 1px solid #e5e7eb;
+            color: #4b5563;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .print-action {
+                display: none;
+            }
+
+            .print-wrap {
+                box-shadow: none;
+                border-radius: 0;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="print-action">
+    <button onclick="window.print()">Print Invoice</button>
+</div>
+
+<div class="print-wrap">
+    <div class="invoice-header">
+        <div class="brand-box">
+            <h2>{{ business.company_name|default:"Business Management System" }}</h2>
+            <p>{{ business.address|default:"Ahmedabad, Gujarat" }}</p>
+            <p>{{ business.email|default:"support@bmsdemo.com" }}</p>
+            <p>{{ business.phone|default:"+91 98765 43210" }}</p>
+        </div>
+
+        <div class="invoice-info">
+            <h1>INVOICE</h1>
+            <p><strong>#{{ invoice.invoice_number|default:invoice.id }}</strong></p>
+            <p>Date: {{ invoice.invoice_date|date:"d M Y"|default:invoice.created_at|date:"d M Y" }}</p>
+            <p>Status: {{ invoice.status|default:"Unpaid" }}</p>
+        </div>
+    </div>
+
+    <div class="bill-to">
+        <h4>Bill To</h4>
+        <p><strong>{{ invoice.customer }}</strong></p>
+        <p>{{ invoice.customer.email|default:"-" }}</p>
+        <p>{{ invoice.customer.phone|default:"-" }}</p>
+        <p>{{ invoice.customer.address|default:"-" }}</p>
+    </div>
+
+    {% if items %}
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th width="100">Qty</th>
+                <th width="150">Price</th>
+                <th width="150" class="text-end">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.item_name|default:item.service }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>₹{{ item.price }}</td>
+                <td class="text-end">₹{{ item.total_price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <table>
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Status</th>
+                <th class="text-end">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ invoice.description|default:"Business Service / Order Invoice" }}</td>
+                <td>{{ invoice.status|default:"Unpaid" }}</td>
+                <td class="text-end">₹{{ invoice.total_amount|default:invoice.amount|default:"0" }}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% endif %}
+
+    <div class="summary">
+        <div>
+            <span>Subtotal</span>
+            <strong>₹{{ invoice.subtotal|default:invoice.total_amount|default:invoice.amount|default:"0" }}</strong>
+        </div>
+        <div>
+            <span>Tax</span>
+            <strong>₹{{ invoice.tax|default:"0" }}</strong>
+        </div>
+        <div>
+            <span>Discount</span>
+            <strong>₹{{ invoice.discount|default:"0" }}</strong>
+        </div>
+        <div class="total">
+            <span>Total</span>
+            <strong>₹{{ invoice.total_amount|default:invoice.amount|default:"0" }}</strong>
+        </div>
+        <div>
+            <span>Paid</span>
+            <strong>₹{{ invoice.paid_amount|default:"0" }}</strong>
+        </div>
+        <div>
+            <span>Pending</span>
+            <strong>₹{{ invoice.pending_amount|default:"0" }}</strong>
+        </div>
+    </div>
+
+    <p class="thanks">
+        Thank you for your business. This is a computer-generated invoice.
+    </p>
+</div>
+
+</body>
+</html>

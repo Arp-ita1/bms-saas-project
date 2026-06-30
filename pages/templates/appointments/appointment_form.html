@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Appointment Form | BMS Admin{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>{{ title|default:"Appointment Form" }}</h1>
+        <p>Create or update customer appointment details.</p>
+    </div>
+
+    <a href="/appointments/" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i>
+        Back
+    </a>
+</div>
+
+<div class="form-box">
+    <form method="post">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <div class="d-flex gap-2 flex-wrap mt-4">
+            <button type="submit" class="btn-main">
+                <i class="bi bi-check-circle"></i>
+                Save Appointment
+            </button>
+
+            <a href="/appointments/" class="btn btn-secondary">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

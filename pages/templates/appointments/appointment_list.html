@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Appointments | BMS Admin{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Appointments</h1>
+        <p>Schedule and manage customer meetings and follow-ups.</p>
+    </div>
+
+    <a href="/appointments/add/" class="btn-main">
+        <i class="bi bi-calendar-plus"></i>
+        Add Appointment
+    </a>
+</div>
+
+<div class="table-box">
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Appointment</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th width="170">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for appointment in appointments %}
+                <tr>
+                    <td>
+                        <strong>{{ appointment.title }}</strong><br>
+                        <small class="text-muted">{{ appointment.notes|truncatechars:55 }}</small>
+                    </td>
+                    <td>{{ appointment.customer }}</td>
+                    <td>{{ appointment.date }}</td>
+                    <td>{{ appointment.time }}</td>
+                    <td>
+                        <span class="badge-soft">{{ appointment.status|default:"Scheduled" }}</span>
+                    </td>
+                    <td>
+                        <a href="/appointments/edit/{{ appointment.id }}/" class="btn btn-sm btn-warning">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a href="/appointments/delete/{{ appointment.id }}/" class="btn btn-sm btn-danger">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">
+                        <div class="empty-box">
+                            <i class="bi bi-calendar2-check"></i>
+                            <h5>No appointments found</h5>
+                            <p>Schedule your first customer appointment.</p>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

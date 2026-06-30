@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Delete Notification | BMS Admin{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Delete Notification</h1>
+        <p>This action will permanently remove this notification.</p>
+    </div>
+</div>
+
+<div class="form-box">
+    <div class="delete-icon-box">
+        <i class="bi bi-exclamation-triangle"></i>
+    </div>
+
+    <h3 class="fw-bold">Are you sure?</h3>
+    <p class="text-muted">
+        You are about to delete this notification. This action cannot be undone.
+    </p>
+
+    <form method="post" class="mt-4">
+        {% csrf_token %}
+
+        <button type="submit" class="btn btn-danger">
+            <i class="bi bi-trash"></i>
+            Yes, Delete
+        </button>
+
+        <a href="/notifications/" class="btn btn-secondary">
+            Cancel
+        </a>
+    </form>
+</div>
+
+{% endblock %}

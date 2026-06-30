@@ -1,0 +1,96 @@
+{% extends "employee_portal/employee_base.html" %}
+
+{% block title %}My Tasks | Employee Portal{% endblock %}
+
+{% block content %}
+
+<section class="ep-hero">
+    <div class="ep-hero-content">
+        <span class="ep-badge">
+            <i class="bi bi-check2-square"></i>
+            My Work
+        </span>
+
+        <h1>My Tasks</h1>
+
+        <p>
+            View all tasks assigned to you, filter work by status or priority and update progress.
+        </p>
+    </div>
+
+    <div class="ep-hero-side">
+        <div class="ep-glass-card">
+            <span>Total Tasks</span>
+            <h3>{{ tasks|length }}</h3>
+            <p>Filtered task records</p>
+        </div>
+    </div>
+</section>
+
+<div class="ep-panel mb-4">
+    <form method="get" class="row g-3">
+        <div class="col-md-5">
+            <input type="text" name="q" value="{{ q|default:'' }}" placeholder="Search task title">
+        </div>
+
+        <div class="col-md-3">
+            <select name="status">
+                <option value="">All Status</option>
+                <option value="Pending" {% if status == "Pending" %}selected{% endif %}>Pending</option>
+                <option value="In Progress" {% if status == "In Progress" %}selected{% endif %}>In Progress</option>
+                <option value="Completed" {% if status == "Completed" %}selected{% endif %}>Completed</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <select name="priority">
+                <option value="">All Priority</option>
+                <option value="Low" {% if priority == "Low" %}selected{% endif %}>Low</option>
+                <option value="Medium" {% if priority == "Medium" %}selected{% endif %}>Medium</option>
+                <option value="High" {% if priority == "High" %}selected{% endif %}>High</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <button type="submit" class="ep-main-btn w-100 justify-content-center">
+                Filter
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="ep-panel">
+    <div class="ep-panel-head">
+        <div>
+            <h4>Task List</h4>
+            <p>Your assigned tasks</p>
+        </div>
+    </div>
+
+    {% if tasks %}
+        {% for task in tasks %}
+            <div class="ep-task-row">
+                <div>
+                    <strong>{{ task.title }}</strong>
+                    <small>
+                        {{ task.priority }} priority |
+                        Status: {{ task.status }} |
+                        Due: {{ task.due_date|default:"-" }}
+                    </small>
+                </div>
+
+                <a href="/employee-portal/tasks/{{ task.id }}/" class="ep-main-btn">
+                    View
+                </a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="ep-empty">
+            <i class="bi bi-check2-square"></i>
+            <h5>No tasks found</h5>
+            <p>No task matches your filter.</p>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends "employee_portal/employee_base.html" %}
+
+{% block title %}Task Detail | Employee Portal{% endblock %}
+
+{% block content %}
+
+<section class="ep-hero">
+    <div class="ep-hero-content">
+        <span class="ep-badge">
+            <i class="bi bi-card-checklist"></i>
+            Task Detail
+        </span>
+
+        <h1>{{ task.title }}</h1>
+
+        <p>
+            Review task details and update the current task status.
+        </p>
+
+        <div class="ep-hero-actions">
+            <a href="/employee-portal/tasks/" class="ep-btn primary">
+                <i class="bi bi-arrow-left"></i>
+                Back to Tasks
+            </a>
+        </div>
+    </div>
+
+    <div class="ep-hero-side">
+        <div class="ep-glass-card">
+            <span>Current Status</span>
+            <h3>{{ task.status }}</h3>
+            <p>{{ task.priority }} priority</p>
+        </div>
+    </div>
+</section>
+
+<section class="ep-grid-2">
+
+    <div class="ep-panel">
+        <div class="ep-panel-head">
+            <div>
+                <h4>Task Information</h4>
+                <p>Complete task details</p>
+            </div>
+        </div>
+
+        <div class="ep-task-row">
+            <div>
+                <strong>Description</strong>
+                <small>{{ task.description|default:"No description added." }}</small>
+            </div>
+        </div>
+
+        <div class="ep-task-row">
+            <div>
+                <strong>Priority</strong>
+                <small>{{ task.priority }}</small>
+            </div>
+        </div>
+
+        <div class="ep-task-row">
+            <div>
+                <strong>Status</strong>
+                <small>{{ task.status }}</small>
+            </div>
+        </div>
+
+        <div class="ep-task-row">
+            <div>
+                <strong>Due Date</strong>
+                <small>{{ task.due_date|default:"-" }}</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="ep-form-card">
+        <div class="ep-panel-head">
+            <div>
+                <h4>Update Status</h4>
+                <p>Change your work progress</p>
+            </div>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <label>Status</label>
+            <select name="status" class="mb-3">
+                <option value="Pending" {% if task.status == "Pending" %}selected{% endif %}>Pending</option>
+                <option value="In Progress" {% if task.status == "In Progress" %}selected{% endif %}>In Progress</option>
+                <option value="Completed" {% if task.status == "Completed" %}selected{% endif %}>Completed</option>
+            </select>
+
+            <button type="submit" class="ep-main-btn w-100 justify-content-center">
+                <i class="bi bi-check-circle"></i>
+                Update Task
+            </button>
+        </form>
+    </div>
+
+</section>
+
+{% endblock %}

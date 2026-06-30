@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Notification Form | BMS{% endblock %}
+{% block content %}
+<h2 class="page-title mb-4">{{ title|default:"Notification Form" }}</h2>
+<div class="form-box"><form method="post">{% csrf_token %}{{ form.as_p }}<button type="submit" class="btn btn-main">Save Notification</button> <a href="/notifications/" class="btn btn-secondary">Cancel</a></form></div>
+{% endblock %}

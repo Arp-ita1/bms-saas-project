@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} | Employees{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>{{ title }}</h1>
+        <p>Add employee details and optionally create employee login account.</p>
+    </div>
+
+    <a href="/employees/" class="btn btn-light">
+        <i class="bi bi-arrow-left"></i>
+        Back
+    </a>
+</div>
+
+<div class="form-box">
+
+    {% if employee and employee.user %}
+        <div class="alert alert-info mb-4">
+            This employee already has login account:
+            <strong>{{ employee.user.username }}</strong>
+        </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                <label>Employee Name</label>
+                {{ form.name }}
+                {{ form.name.errors }}
+            </div>
+
+            <div class="col-md-6">
+                <label>Email</label>
+                {{ form.email }}
+                {{ form.email.errors }}
+            </div>
+
+            <div class="col-md-6">
+                <label>Phone</label>
+                {{ form.phone }}
+                {{ form.phone.errors }}
+            </div>
+
+            <div class="col-md-6">
+                <label>Position</label>
+                {{ form.position }}
+                {{ form.position.errors }}
+            </div>
+
+            <div class="col-md-6">
+                <label>Salary</label>
+                {{ form.salary }}
+                {{ form.salary.errors }}
+            </div>
+
+            <div class="col-md-6">
+                <label>Joining Date</label>
+                {{ form.joining_date }}
+                {{ form.joining_date.errors }}
+            </div>
+
+            <div class="col-md-6">
+                <label>Status</label>
+                {{ form.status }}
+                {{ form.status.errors }}
+            </div>
+
+            <div class="col-12">
+                <label>Address</label>
+                {{ form.address }}
+                {{ form.address.errors }}
+            </div>
+
+            {% if not employee or not employee.user %}
+                <div class="col-12 mt-3">
+                    <div class="admin-card">
+                        <h5 class="fw-bold mb-2">Employee Login Account</h5>
+
+                        <p class="text-muted mb-3">
+                            Create login account only if this employee needs employee portal access.
+                        </p>
+
+                        <div class="form-check mb-3">
+                            {{ form.create_login_account }}
+                            <label class="form-check-label">
+                                Create login account for this employee
+                            </label>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label>Login Username</label>
+                                {{ form.login_username }}
+                                {{ form.login_username.errors }}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Login Password</label>
+                                {{ form.login_password }}
+                                {{ form.login_password.errors }}
+                            </div>
+                        </div>
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger mt-3">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="col-12 mt-4">
+                <button type="submit" class="btn-main">
+                    <i class="bi bi-check-circle"></i>
+                    Save Employee
+                </button>
+
+                <a href="/employees/" class="btn btn-secondary">
+                    Cancel
+                </a>
+            </div>
+
+        </div>
+    </form>
+
+</div>
+
+{% endblock %}

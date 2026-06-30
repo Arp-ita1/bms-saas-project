@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} | Orders{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>{{ title }}</h1>
+        <p>Create customer order and track order status.</p>
+    </div>
+
+    <a href="/orders/" class="btn btn-light">
+        <i class="bi bi-arrow-left"></i>
+        Back
+    </a>
+</div>
+
+<div class="form-box">
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                <label>Customer</label>
+                {{ form.customer }}
+                {{ form.customer.errors }}
+
+                <small class="text-muted">
+                    Only active customers of this business will appear here.
+                </small>
+            </div>
+
+            <div class="col-md-6">
+                <label>Order Date</label>
+                {{ form.order_date }}
+                {{ form.order_date.errors }}
+            </div>
+
+            <div class="col-md-6">
+                <label>Order Title</label>
+                {{ form.title }}
+                {{ form.title.errors }}
+            </div>
+
+            <div class="col-md-6">
+                <label>Total Amount</label>
+                {{ form.total_amount }}
+                {{ form.total_amount.errors }}
+            </div>
+
+            <div class="col-md-6">
+                <label>Status</label>
+                {{ form.status }}
+                {{ form.status.errors }}
+            </div>
+
+            <div class="col-12">
+                <label>Description</label>
+                {{ form.description }}
+                {{ form.description.errors }}
+            </div>
+
+            <div class="col-12 mt-4">
+                <button type="submit" class="btn-main">
+                    <i class="bi bi-check-circle"></i>
+                    Save Order
+                </button>
+
+                <a href="/orders/" class="btn btn-secondary">
+                    Cancel
+                </a>
+            </div>
+
+        </div>
+    </form>
+
+</div>
+
+{% endblock %}

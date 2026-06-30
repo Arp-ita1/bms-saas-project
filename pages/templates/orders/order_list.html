@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Orders | BMS{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Orders</h1>
+        <p>Manage customer orders, amount and order status.</p>
+    </div>
+
+    <a href="/orders/add/" class="btn-main">
+        <i class="bi bi-plus-circle"></i>
+        Add Order
+    </a>
+</div>
+
+<div class="table-box">
+
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-10">
+            <input 
+                type="text" 
+                name="q" 
+                value="{{ request.GET.q }}" 
+                placeholder="Search order number, customer, phone, title or status"
+            >
+        </div>
+
+        <div class="col-md-2">
+            <button type="submit" class="btn-main w-100 justify-content-center">
+                <i class="bi bi-search"></i>
+                Search
+            </button>
+        </div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Order</th>
+                    <th>Customer</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th width="140">Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>
+                        <strong>{{ order.order_number }}</strong><br>
+                        <small class="text-muted">{{ order.title }}</small>
+                    </td>
+
+                    <td>
+                        {% if order.customer %}
+                            {{ order.customer.name }}<br>
+                            <small class="text-muted">{{ order.customer.phone|default:"-" }}</small>
+                        {% else %}
+                            <span class="text-muted">No customer</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <strong>₹{{ order.total_amount }}</strong>
+                    </td>
+
+                    <td>
+                        <span class="status-badge processing">{{ order.status }}</span>
+                    </td>
+
+                    <td>{{ order.order_date }}</td>
+
+                    <td>
+                        <a href="/orders/edit/{{ order.id }}/" class="btn btn-sm btn-primary">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+
+                        <a href="/orders/delete/{{ order.id }}/" class="btn btn-sm btn-danger">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+
+                {% empty %}
+                <tr>
+                    <td colspan="6">
+                        <div class="empty-box">
+                            <i class="bi bi-bag-check"></i>
+                            <h5>No orders found</h5>
+                            <p>Create your first order after adding a customer.</p>
+
+                            <a href="/orders/add/" class="btn-main">
+                                <i class="bi bi-plus-circle"></i>
+                                Add Order
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}

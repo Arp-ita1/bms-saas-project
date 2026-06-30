@@ -1,0 +1,81 @@
+{% extends "customer_portal/customer_base.html" %}
+
+{% block title %}Invoice Detail | Customer Portal{% endblock %}
+
+{% block content %}
+
+<section class="cp-hero">
+    <div class="cp-hero-content">
+        <span class="cp-badge">
+            <i class="bi bi-receipt"></i>
+            Invoice Detail
+        </span>
+
+        <h1>{{ invoice.invoice_number }}</h1>
+
+        <p>View invoice amount, payment status and remaining balance.</p>
+
+        <div class="cp-hero-actions">
+            <a href="/customer-portal/invoices/" class="cp-btn primary">
+                <i class="bi bi-arrow-left"></i>
+                Back to Invoices
+            </a>
+        </div>
+    </div>
+
+    <div class="cp-hero-side">
+        <div class="cp-glass-card">
+            <span>Status</span>
+            <h3>{{ invoice.status }}</h3>
+            <p>Pending: ₹{{ invoice.pending_amount }}</p>
+        </div>
+    </div>
+</section>
+
+<div class="cp-profile-card">
+    <div class="row g-4">
+        <div class="col-md-6">
+            <label>Invoice Number</label>
+            <div class="cp-row">
+                <div><strong>{{ invoice.invoice_number }}</strong></div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <label>Status</label>
+            <div class="cp-row">
+                <div><strong>{{ invoice.status }}</strong></div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <label>Total Amount</label>
+            <div class="cp-row">
+                <div><strong>₹{{ invoice.total_amount }}</strong></div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <label>Paid Amount</label>
+            <div class="cp-row">
+                <div><strong>₹{{ invoice.paid_amount }}</strong></div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <label>Pending Amount</label>
+            <div class="cp-row">
+                <div><strong>₹{{ invoice.pending_amount }}</strong></div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <label>Invoice Date</label>
+            <div class="cp-row">
+                <div><strong>{{ invoice.invoice_date }}</strong></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends "public_base.html" %}
+
+{% block title %}Modules | BMS{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+    <div class="container">
+        <div class="section-badge">
+            <i class="bi bi-grid-1x2"></i>
+            System modules
+        </div>
+        <h1 class="page-hero-title">
+            Organized modules for <span class="gradient-text">complete business control.</span>
+        </h1>
+        <p class="page-hero-text">
+            Each module has a clear role, so the project looks structured and easy to explain in presentation.
+        </p>
+    </div>
+</section>
+
+<section class="section pt-2">
+    <div class="container">
+        <div class="module-table">
+            <div class="module-row">
+                <div class="module-name"><i class="bi bi-shield-lock"></i> Accounts</div>
+                <div class="module-desc">Login, register, logout and protected access for dashboard and portal.</div>
+                <div class="module-tag">Core</div>
+            </div>
+
+            <div class="module-row">
+                <div class="module-name"><i class="bi bi-speedometer2"></i> Dashboard</div>
+                <div class="module-desc">Business overview with totals, activity and quick operational summary.</div>
+                <div class="module-tag">Analytics</div>
+            </div>
+
+            <div class="module-row">
+                <div class="module-name"><i class="bi bi-people"></i> Customers</div>
+                <div class="module-desc">Add, edit, delete and manage customer information and customer user mapping.</div>
+                <div class="module-tag">CRUD</div>
+            </div>
+
+            <div class="module-row">
+                <div class="module-name"><i class="bi bi-person-badge"></i> Employees</div>
+                <div class="module-desc">Manage employee details, salary, position, contact and active status.</div>
+                <div class="module-tag">Staff</div>
+            </div>
+
+            <div class="module-row">
+                <div class="module-name"><i class="bi bi-kanban"></i> Tasks</div>
+                <div class="module-desc">Assign tasks to employees with due date, priority and completion status.</div>
+                <div class="module-tag">Tracking</div>
+            </div>
+
+            <div class="module-row">
+                <div class="module-name"><i class="bi bi-calendar-check"></i> Appointments</div>
+                <div class="module-desc">Schedule customer meetings, follow-ups and business appointments.</div>
+                <div class="module-tag">Schedule</div>
+            </div>
+
+            <div class="module-row">
+                <div class="module-name"><i class="bi bi-bag-check"></i> Orders</div>
+                <div class="module-desc">Create and track customer orders with amount and status updates.</div>
+                <div class="module-tag">Sales</div>
+            </div>
+
+            <div class="module-row">
+                <div class="module-name"><i class="bi bi-receipt"></i> Invoices</div>
+                <div class="module-desc">Create invoices, view invoice detail and print invoice for customers.</div>
+                <div class="module-tag">Billing</div>
+            </div>
+
+            <div class="module-row">
+                <div class="module-name"><i class="bi bi-bell"></i> Notifications</div>
+                <div class="module-desc">Manage updates and alerts for customers or business activities.</div>
+                <div class="module-tag">Alerts</div>
+            </div>
+
+            <div class="module-row">
+                <div class="module-name"><i class="bi bi-person-circle"></i> Customer Portal</div>
+                <div class="module-desc">Customer dashboard to view own orders, invoices, appointments and profile.</div>
+                <div class="module-tag">Portal</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

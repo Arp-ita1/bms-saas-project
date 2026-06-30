@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}Platform Dashboard | BMS{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="page-title mb-1">BMS Platform Dashboard</h2>
+        <p class="text-muted mb-0">
+            Manage businesses, plans, subscriptions and platform inquiries.
+        </p>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="top-card">
+            <h6>Total Businesses</h6>
+            <h2>{{ total_businesses }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="top-card">
+            <h6>Active Businesses</h6>
+            <h2>{{ active_businesses }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="top-card">
+            <h6>Total Subscriptions</h6>
+            <h2>{{ total_subscriptions }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="top-card">
+            <h6>Trial Subscriptions</h6>
+            <h2>{{ trial_subscriptions }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="top-card">
+            <h6>Paid Subscriptions</h6>
+            <h2>{{ paid_subscriptions }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="top-card">
+            <h6>Pending Payments</h6>
+            <h2>{{ pending_payments }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="top-card">
+            <h6>Total Plans</h6>
+            <h2>{{ total_plans }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="top-card">
+            <h6>Total Revenue</h6>
+            <h2>₹{{ total_revenue }}</h2>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="table-box">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">Recent Businesses</h5>
+                <a href="/platform/businesses/" class="btn btn-sm btn-primary">View All</a>
+            </div>
+
+            {% if recent_businesses %}
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr>
+                                <th>Business</th>
+                                <th>Owner</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for business in recent_businesses %}
+                            <tr>
+                                <td>{{ business.business_name }}</td>
+                                <td>{{ business.owner.username }}</td>
+                                <td>{{ business.status }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted mb-0">No businesses found.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="table-box">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">Recent Subscriptions</h5>
+                <a href="/platform/subscriptions/" class="btn btn-sm btn-primary">View All</a>
+            </div>
+
+            {% if recent_subscriptions %}
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr>
+                                <th>Business</th>
+                                <th>Plan</th>
+                                <th>Payment</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for subscription in recent_subscriptions %}
+                            <tr>
+                                <td>{{ subscription.business.business_name }}</td>
+                                <td>{{ subscription.plan.name|default:"-" }}</td>
+                                <td>{{ subscription.payment_status }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted mb-0">No subscriptions found.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends "employee_portal/employee_base.html" %}
+
+{% block title %}My Profile | Employee Portal{% endblock %}
+
+{% block content %}
+
+<section class="ep-hero">
+    <div class="ep-hero-content">
+        <span class="ep-badge">
+            <i class="bi bi-person-circle"></i>
+            Employee Profile
+        </span>
+
+        {% if employee %}
+            <h1>{{ employee.name }}</h1>
+        {% else %}
+            <h1>My Profile</h1>
+        {% endif %}
+
+        <p>
+            View your employee information connected with this business workspace.
+        </p>
+    </div>
+
+    <div class="ep-hero-side">
+        <div class="ep-glass-card">
+            <span>Role</span>
+            <h3>Employee</h3>
+            <p>{{ employee.position|default:"Team Member" }}</p>
+        </div>
+    </div>
+</section>
+
+{% if employee %}
+    <div class="ep-profile-card">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <label>Name</label>
+                <div class="ep-task-row">
+                    <div>
+                        <strong>{{ employee.name }}</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label>Position</label>
+                <div class="ep-task-row">
+                    <div>
+                        <strong>{{ employee.position }}</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label>Email</label>
+                <div class="ep-task-row">
+                    <div>
+                        <strong>{{ employee.email|default:"-" }}</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label>Phone</label>
+                <div class="ep-task-row">
+                    <div>
+                        <strong>{{ employee.phone|default:"-" }}</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label>Joining Date</label>
+                <div class="ep-task-row">
+                    <div>
+                        <strong>{{ employee.joining_date|default:"-" }}</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label>Status</label>
+                <div class="ep-task-row">
+                    <div>
+                        <strong>{{ employee.status }}</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <label>Address</label>
+                <div class="ep-task-row">
+                    <div>
+                        <strong>{{ employee.address|default:"-" }}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="alert alert-danger">
+        Employee profile not found. Please contact business admin.
+    </div>
+{% endif %}
+
+{% endblock %}

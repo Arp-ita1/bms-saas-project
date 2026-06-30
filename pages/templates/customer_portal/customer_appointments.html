@@ -1,0 +1,62 @@
+{% extends "customer_portal/customer_base.html" %}
+
+{% block title %}My Appointments | BMS{% endblock %}
+
+{% block content %}
+
+<div class="portal-page-header">
+    <div>
+        <h1>My Appointments</h1>
+        <p>View your scheduled appointments, date, time and status.</p>
+    </div>
+</div>
+
+<div class="portal-card">
+    <div class="table-responsive">
+        <table class="table portal-table align-middle">
+            <thead>
+                <tr>
+                    <th>Appointment</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for appointment in appointments %}
+                <tr>
+                    <td>
+                        <strong>{{ appointment.title }}</strong>
+                    </td>
+                    <td>{{ appointment.date }}</td>
+                    <td>{{ appointment.time }}</td>
+                    <td>
+                        {% if appointment.status == "Completed" %}
+                            <span class="portal-status completed">Completed</span>
+                        {% elif appointment.status == "Cancelled" %}
+                            <span class="portal-status cancelled">Cancelled</span>
+                        {% else %}
+                            <span class="portal-status processing">{{ appointment.status|default:"Scheduled" }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ appointment.notes|default:"-" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">
+                        <div class="portal-empty">
+                            <i class="bi bi-calendar-check"></i>
+                            <h5>No appointments found</h5>
+                            <p>Your appointments will appear here after admin schedules them.</p>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

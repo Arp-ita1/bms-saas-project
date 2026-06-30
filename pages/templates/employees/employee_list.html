@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Employees | BMS{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Employees</h1>
+        <p>Manage employees, login accounts and task assignment.</p>
+    </div>
+
+    <a href="/employees/add/" class="btn-main">
+        <i class="bi bi-plus-circle"></i>
+        Add Employee
+    </a>
+</div>
+
+<div class="table-box">
+
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-10">
+            <input 
+                type="text" 
+                name="q" 
+                value="{{ request.GET.q }}" 
+                placeholder="Search employee name, email, phone or position"
+            >
+        </div>
+
+        <div class="col-md-2">
+            <button type="submit" class="btn-main w-100 justify-content-center">
+                <i class="bi bi-search"></i>
+                Search
+            </button>
+        </div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Employee</th>
+                    <th>Contact</th>
+                    <th>Position</th>
+                    <th>Salary</th>
+                    <th>Login Account</th>
+                    <th>Status</th>
+                    <th width="140">Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for employee in employees %}
+                <tr>
+                    <td>
+                        <strong>{{ employee.name }}</strong><br>
+                        <small class="text-muted">Joined: {{ employee.joining_date|default:"-" }}</small>
+                    </td>
+
+                    <td>
+                        {{ employee.email|default:"-" }}<br>
+                        <small class="text-muted">{{ employee.phone|default:"-" }}</small>
+                    </td>
+
+                    <td>{{ employee.position }}</td>
+
+                    <td>₹{{ employee.salary }}</td>
+
+                    <td>
+                        {% if employee.user %}
+                            <span class="badge bg-success">{{ employee.user.username }}</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Not Created</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <span class="status-badge processing">{{ employee.status }}</span>
+                    </td>
+
+                    <td>
+                        <a href="/employees/edit/{{ employee.id }}/" class="btn btn-sm btn-primary">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+
+                        <a href="/employees/delete/{{ employee.id }}/" class="btn btn-sm btn-danger">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+
+                {% empty %}
+                <tr>
+                    <td colspan="7">
+                        <div class="empty-box">
+                            <i class="bi bi-person-badge"></i>
+                            <h5>No employees found</h5>
+                            <p>Add your first employee before assigning tasks.</p>
+
+                            <a href="/employees/add/" class="btn-main">
+                                <i class="bi bi-plus-circle"></i>
+                                Add Employee
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}
