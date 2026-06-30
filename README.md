@@ -33,3 +33,4 @@ Use `python manage.py createsuperuser` to create an admin account. Normal regist
 - Admin pages require a staff/superuser account.
 - Create admin using: `python manage.py createsuperuser`
 - Normal registered users are customer users and can access only `/customer-portal/`.
+"# bms-saas-project" 
